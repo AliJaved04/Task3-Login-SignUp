@@ -33,7 +33,11 @@
       <input type="number" id="phone" class="form-control" />
     </div>
     <div class="mv-3">
-      <button class="btn btn-outline-primary" @click="uploadHandler">
+      <button
+        class="btn btn-outline-primary"
+        style="margin-right: 20px"
+        @click="uploadHandler"
+      >
         Upload Image
       </button>
       <button class="btn btn-outline-primary" @click="captureHandler">
