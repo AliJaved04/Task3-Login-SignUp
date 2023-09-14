@@ -1,30 +1,92 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  
   <router-view/>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.Form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    min-height: 100vh;
+    background-color: whitesmoke;
 }
 
-nav {
-  padding: 30px;
+
+.link
+{
+    text-decoration: none;
+    
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+#imageSection
+{
+    display: none;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+
+#uploadSection
+{
+    display: none;
+}
+
+
+
+#camera-container {
+    width: 100%;
+    text-align: center;
+}
+#camera {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+#capture-button {
+    margin-top: 10px;
+    cursor: pointer;}
+
+
+input
+{
+    min-width: 450px;
+}
+
+#validateMsg
+{
+    display: none;
+}
+
+#message
+{
+    display: none;
+}
+
+.passwordContainer
+{
+    position: relative;
+}
+
+.mb-3
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.passwordToggle {
+    position: absolute;
+    top: 74%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+@media screen and (max-width:400px) {
+    input{
+     min-width: 300px;
+    }
 }
 </style>
