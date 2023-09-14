@@ -4,11 +4,21 @@
     <h1 style="margin-bottom: 30px">Login Form</h1>
     <div class="mb-3">
       <label class="form-label">Email address</label>
-      <input type="email" id="email" class="form-control" />
+      <input
+        type="email"
+        id="email"
+        v-model="loginData.email"
+        class="form-control"
+      />
     </div>
     <div class="mb-3 passwordContainer">
       <label class="form-label">Password</label>
-      <input type="password" id="password" class="form-control" />
+      <input
+        type="password"
+        v-model="loginData.password"
+        id="password"
+        class="form-control"
+      />
       <i
         class="fa-solid fa-eye passwordToggle"
         id="passwordIcon"
@@ -31,26 +41,31 @@
 <script>
 export default {
   name: "Login",
-
   data() {
     return {
       loginData: {
-        email: "aa",
+        email: "",
         password: "",
       },
+
+      mediaStream: {},
     };
   },
+
+  onMounted() {
+    console.log("object");
+  },
+
   methods: {
     //Login Submit
 
     loginSubmit(event) {
       event.preventDefault();
 
-      const email = document.getElementById("email");
-      const password = document.getElementById("password");
-      this.loginData.email = email.value;
-      this.loginData.password = password.value;
-      if (email.length < 1 || password.length < 1) {
+      if (
+        this.loginData.email.length < 1 ||
+        this.loginData.password.length < 1
+      ) {
         document.getElementById("validateMsg").style.display = "block";
       } else {
         document.getElementById("validateMsg").style.display = "none";
@@ -75,8 +90,6 @@ export default {
         password.type = "password";
       }
     },
-
-    //Close Camera Stream
   },
 };
 </script>

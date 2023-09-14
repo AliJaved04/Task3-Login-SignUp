@@ -21,7 +21,7 @@
       <i
         class="fa-solid fa-eye passwordToggle"
         id="passwordIcon"
-        onclick="passwordVisibility"
+        @click="passwordVisibility"
       ></i>
     </div>
     <div class="mb-3">
@@ -175,7 +175,6 @@ export default {
         .then((stream) => {
           const camera = document.getElementById("camera");
           camera.srcObject = stream;
-
           this.mediaStream = stream;
         })
         .catch(function (error) {
