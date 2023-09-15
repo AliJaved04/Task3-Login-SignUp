@@ -5,19 +5,39 @@
 
     <div class="mb-3">
       <label class="form-label">First Name</label>
-      <input type="text" id="firstName" class="form-control" />
+      <input
+        type="text"
+        v-model="signUpData.firstName"
+        id="firstName"
+        class="form-control"
+      />
     </div>
     <div class="mb-3">
       <label class="form-label">Last Name</label>
-      <input type="text" id="lastName" class="form-control" />
+      <input
+        type="text"
+        v-model="signUpData.lastName"
+        id="lastName"
+        class="form-control"
+      />
     </div>
     <div class="mb-3">
       <label class="form-label">Email address</label>
-      <input type="email" id="email" class="form-control" />
+      <input
+        type="email"
+        v-model="signUpData.email"
+        id="email"
+        class="form-control"
+      />
     </div>
     <div class="mb-3 passwordContainer">
       <label class="form-label">Password</label>
-      <input type="password" id="password" class="form-control" />
+      <input
+        type="password"
+        v-model="signUpData.password"
+        id="password"
+        class="form-control"
+      />
       <i
         class="fa-solid fa-eye passwordToggle"
         id="passwordIcon"
@@ -26,11 +46,21 @@
     </div>
     <div class="mb-3">
       <label class="form-label">Address</label>
-      <input type="text" id="address" class="form-control" />
+      <input
+        type="text"
+        v-model="signUpData.address"
+        id="address"
+        class="form-control"
+      />
     </div>
     <div class="mb-3">
       <label class="form-label">Phone</label>
-      <input type="number" id="phone" class="form-control" />
+      <input
+        type="number"
+        id="phone"
+        v-model="signUpData.phone"
+        class="form-control"
+      />
     </div>
     <div class="mv-3">
       <button
@@ -70,7 +100,7 @@
         style="display: none"
       />
     </div>
-    <h4 id="message">Image is uploaded</h4>
+    <img id="storedImage" src="../assets/logo.png" alt="" />
     <button
       type="submit"
       class="btn btn-primary"
@@ -110,16 +140,14 @@ export default {
     //SignUp Submit
     signUpSubmit(event) {
       event.preventDefault();
-      this.signUpData.email = document.getElementById("email").value;
-      this.signUpData.firstName = document.getElementById("firstName").value;
-      this.signUpData.lastName = document.getElementById("lastName").value;
-      this.signUpData.phone = document.getElementById("phone").value;
       this.signUpData.Image = document.getElementById("Image").value;
+      if (this.signUpData.Image.length < 1) {
+        this.signUpData.Image = document.getElementById("test").src;
+      }
+
       if (document.getElementById("Image").value < 1) {
         this.signUpData.Image = document.getElementById("Image").src;
       }
-      this.signUpData.address = document.getElementById("address").value;
-      this.signUpData.password = document.getElementById("password").value;
 
       if (
         this.signUpData.firstName.length < 1 ||
@@ -195,7 +223,9 @@ export default {
       context.drawImage(camera, 0, 0, canvas.width, canvas.height);
 
       const imageDataURL = canvas.toDataURL("image/png");
-      capturedImageElement.src = imageDataURL;
+      document.getElementById("storedImage").src = imageDataURL;
+      document.getElementById("storedImage").style.display = "block";
+      capturedImageElement.value = "";
       this.closeCameraStream();
       document.getElementById("imageSection").style.display = "none";
       document.getElementById("uploadSection").style.display = "none";
