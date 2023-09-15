@@ -1,11 +1,11 @@
 <template>
-  <form class="Form" id="form">
-    <h3 id="validateMsg">Please fill out all the fields</h3>
+  <form class="Form" id="form" ref="form">
     <h1 style="margin-bottom: 30px">SignUp Form</h1>
 
     <div class="mb-3">
       <label class="form-label">First Name</label>
       <input
+        ref="firstName"
         type="text"
         v-model="signUpData.firstName"
         id="firstName"
@@ -15,6 +15,7 @@
     <div class="mb-3">
       <label class="form-label">Last Name</label>
       <input
+        ref="lastName"
         type="text"
         v-model="signUpData.lastName"
         id="lastName"
@@ -25,6 +26,7 @@
       <label class="form-label">Email address</label>
       <input
         type="email"
+        ref="email"
         v-model="signUpData.email"
         id="email"
         class="form-control"
@@ -33,6 +35,7 @@
     <div class="mb-3 passwordContainer">
       <label class="form-label">Password</label>
       <input
+        ref="password"
         type="password"
         v-model="signUpData.password"
         id="password"
@@ -47,6 +50,7 @@
     <div class="mb-3">
       <label class="form-label">Address</label>
       <input
+        ref="address"
         type="text"
         v-model="signUpData.address"
         id="address"
@@ -56,6 +60,7 @@
     <div class="mb-3">
       <label class="form-label">Phone</label>
       <input
+        ref="phone"
         type="number"
         id="phone"
         v-model="signUpData.phone"
@@ -74,14 +79,21 @@
         Live Image
       </button>
     </div>
-    <div class="mb-3" id="uploadSection">
+    <div class="mb-3" id="uploadSection" ref="uploadSection">
       <label class="form-label">Upload Image</label>
-      <input type="file" id="Image" accept="image/*" class="form-control" />
+      <input
+        type="file"
+        id="Image"
+        ref="Image"
+        accept="image/*"
+        class="form-control"
+      />
     </div>
-    <div id="imageSection" class="mb-3">
+    <div id="imageSection" ref="imageSection" class="mb-3">
       <video
         class="form-control"
         style="margin-top: 30px"
+        ref="camera"
         id="camera"
         autoplay
       ></video>
@@ -95,12 +107,13 @@
       </button>
       <input
         type="file"
+        ref="capturedImage"
         id="capturedImage"
         accept="image/*"
         style="display: none"
       />
     </div>
-    <img id="storedImage" src="../assets/logo.png" alt="" />
+    <img id="storedImage" ref="storedImage" src="../assets/logo.png" alt="" />
     <button
       type="submit"
       class="btn btn-primary"
@@ -140,13 +153,9 @@ export default {
     //SignUp Submit
     signUpSubmit(event) {
       event.preventDefault();
-      this.signUpData.Image = document.getElementById("Image").value;
+      this.signUpData.Image = this.$refs.Image.value;
       if (this.signUpData.Image.length < 1) {
-        this.signUpData.Image = document.getElementById("test").src;
-      }
-
-      if (document.getElementById("Image").value < 1) {
-        this.signUpData.Image = document.getElementById("Image").src;
+        this.signUpData.Image = this.$refs.storedImage.src;
       }
 
       if (
@@ -158,28 +167,23 @@ export default {
         this.signUpData.address.length < 1 ||
         this.signUpData.password.length < 1
       ) {
-        document.getElementById("validateMsg").style.display = "block";
       } else {
-        document.getElementById("validateMsg").style.display = "none";
         localStorage.setItem("signUpData", JSON.stringify(this.signUpData));
-        document.getElementById("form").reset();
+        this.$refs.form.reset();
       }
     },
 
     //Password Visibility
 
     passwordVisibility() {
-      const password = document.getElementById("password");
-      const passwordIcon = document.getElementById("passwordIcon");
-
-      if (password.type === "password") {
-        password.type = "text";
-        passwordIcon.classList.remove("fa-eye");
-        passwordIcon.classList.add("fa-eye-slash");
+      if (this.$refs.password.type === "password") {
+        this.$refs.password.type = "text";
+        this.$refs.passwordIcon.classList.remove("fa-eye");
+        this.$refs.passwordIcon.classList.add("fa-eye-slash");
       } else {
-        passwordIcon.classList.add("fa-eye");
-        passwordIcon.classList.remove("fa-eye-slash");
-        password.type = "password";
+        this.$refs.passwordIcon.classList.add("fa-eye");
+        this.$refs.passwordIcon.classList.remove("fa-eye-slash");
+        this.$refs.password.type = "password";
       }
     },
 
@@ -187,22 +191,22 @@ export default {
 
     uploadHandler(e) {
       e.preventDefault();
-      document.getElementById("imageSection").style.display = "none";
+      this.$refs.imageSection.style.display = "none";
 
-      document.getElementById("uploadSection").style.display = "block";
+      this.$refs.uploadSection.style.display = "block";
     },
 
     //Capture Live Image
 
     captureHandler(e) {
       e.preventDefault();
-      document.getElementById("imageSection").style.display = "block";
-      document.getElementById("uploadSection").style.display = "none";
+      this.$refs.imageSection.style.display = "block";
+      this.$refs.uploadSection.style.display = "none";
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((stream) => {
-          const camera = document.getElementById("camera");
-          camera.srcObject = stream;
+          // const camera = document.getElementById("camera");
+          this.$refs.camera.srcObject = stream;
           this.mediaStream = stream;
         })
         .catch(function (error) {
@@ -214,8 +218,9 @@ export default {
 
     captureImage(event) {
       event.preventDefault();
-      const camera = document.getElementById("camera");
-      const capturedImageElement = document.getElementById("Image");
+
+      const camera = this.$refs.camera;
+      const capturedImageElement = this.$refs.Image;
       const canvas = document.createElement("canvas");
       canvas.width = 300;
       canvas.height = 300;
@@ -223,13 +228,12 @@ export default {
       context.drawImage(camera, 0, 0, canvas.width, canvas.height);
 
       const imageDataURL = canvas.toDataURL("image/png");
-      document.getElementById("storedImage").src = imageDataURL;
-      document.getElementById("storedImage").style.display = "block";
+      this.$refs.storedImage.src = imageDataURL;
+      this.$refs.storedImage.style.display = "block";
       capturedImageElement.value = "";
+      this.$refs.imageSection.style.display = "none";
+      this.$refs.uploadSection.style.display = "none";
       this.closeCameraStream();
-      document.getElementById("imageSection").style.display = "none";
-      document.getElementById("uploadSection").style.display = "none";
-      document.getElementById("message").style.display = "block";
     },
 
     //Close Camera Stream

@@ -3,4 +3,7 @@ import App from './App.vue'
 import router from './router'
 import "bootstrap/dist/css/bootstrap.css"
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.js'
-createApp(App).use(bootstrap).use(router).mount('#app')
+import Toaster from '@meforma/vue-toaster'
+
+
+createApp(App).use(Toaster).use(bootstrap).use(router).mount('#app')

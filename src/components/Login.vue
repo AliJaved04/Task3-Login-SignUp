@@ -1,12 +1,12 @@
 <template>
-  <form class="Form" id="form">
-    <h3 id="validateMsg">Please fill out all the fields</h3>
+  <form class="Form" id="form" ref="form">
     <h1 style="margin-bottom: 30px">Login Form</h1>
     <div class="mb-3">
       <label class="form-label">Email address</label>
       <input
         type="email"
         id="email"
+        ref="emailField"
         v-model="loginData.email"
         class="form-control"
       />
@@ -15,6 +15,7 @@
       <label class="form-label">Password</label>
       <input
         type="password"
+        ref="passwordField"
         v-model="loginData.password"
         id="password"
         class="form-control"
@@ -22,6 +23,7 @@
       <i
         class="fa-solid fa-eye passwordToggle"
         id="passwordIcon"
+        ref="passwordIcon"
         @click="passwordVisibility"
       ></i>
     </div>
@@ -61,33 +63,49 @@ export default {
 
     loginSubmit(event) {
       event.preventDefault();
-
-      if (
-        this.loginData.email.length < 1 ||
-        this.loginData.password.length < 1
-      ) {
-        document.getElementById("validateMsg").style.display = "block";
-      } else {
-        document.getElementById("validateMsg").style.display = "none";
+      if (this.validate()) {
         localStorage.setItem("loginData", JSON.stringify(this.loginData));
-        document.getElementById("form").reset();
+        this.$refs.form.reset();
       }
+    },
+
+    validate() {
+      if (
+        this.$refs.emailField.value.length < 1 ||
+        this.$refs.passwordField.value.length < 1
+      ) {
+        if (
+          this.$refs.emailField.value.length < 1 &&
+          this.$refs.passwordField.value.length < 1
+        ) {
+          this.$toast.error("Please Enter Email and Password", {
+            position: "top-right",
+          });
+        } else if (this.$refs.emailField.value.length < 1) {
+          this.$toast.error("Please Enter Email", {
+            position: "top-right",
+          });
+        } else if (this.$refs.passwordField.value.length < 1) {
+          this.$toast.error("Please Enter Password", {
+            position: "top-right",
+          });
+        }
+        return false;
+      }
+      return true;
     },
 
     //Password Icon
 
     passwordVisibility() {
-      const password = document.getElementById("password");
-      const passwordIcon = document.getElementById("passwordIcon");
-
-      if (password.type === "password") {
-        password.type = "text";
-        passwordIcon.classList.remove("fa-eye");
-        passwordIcon.classList.add("fa-eye-slash");
+      if (this.$refs.passwordField.type === "password") {
+        this.$refs.passwordField.type = "text";
+        this.$refs.passwordIcon.classList.remove("fa-eye");
+        this.$refs.passwordIcon.classList.add("fa-eye-slash");
       } else {
-        passwordIcon.classList.add("fa-eye");
-        passwordIcon.classList.remove("fa-eye-slash");
-        password.type = "password";
+        this.$refs.passwordIcon.classList.add("fa-eye");
+        this.$refs.passwordIcon.classList.remove("fa-eye-slash");
+        this.$refs.passwordField.type = "password";
       }
     },
   },
